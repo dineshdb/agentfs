@@ -27,5 +27,3 @@ tempfile = "3"
 proptest = "1.4"
 rand = "0.8"
 
-[profile.bench]
-debug = true
