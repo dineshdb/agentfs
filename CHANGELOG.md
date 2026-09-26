@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.6.5] - 2026-09-26
+
+### Changed
+
+- Rust SDK: Update turso 0.4.4 -> 0.7.2. Triggers are always enabled in
+  0.7 (databases carrying triggers no longer fail with the
+  `--experimental-triggers` parse error), and busy-timeout handling is
+  available to hosts sharing a database file between processes.
+
 ## [0.6.4] - 2026-03-25
 
 ### Fixed
