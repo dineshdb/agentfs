@@ -8,6 +8,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
 
     # Detect Linux distribution
     if [ -f /etc/os-release ]; then
+        # shellcheck disable=SC1091  # provisioner hosts vary
         . /etc/os-release
         DISTRO=$ID
     else
