@@ -1,3 +1,9 @@
+// turso 0.8 types make the deeply nested OverlayFS async chains exceed the
+// default trait-solver recursion depth (128) when evaluating the `Send` bound
+// of async-trait's boxed futures; without this, evaluation *overflows* and
+// rustc warns (future hard error, rust#159228) instead of proving `Send`.
+#![recursion_limit = "512"]
+
 pub mod connection_pool;
 pub mod error;
 pub mod filesystem;

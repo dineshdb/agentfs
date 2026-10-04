@@ -1,5 +1,20 @@
 # Changelog
 
+## [Unreleased]
+
+### Changed
+
+- Rust SDK: Update turso 0.7.2 -> 0.8.0 (resolves turso_core/turso_sdk_kit
+  0.8.1). No turso API adaptations were required — the local, transaction,
+  and `sync` (Turso Cloud HTTP) surfaces the SDK uses are unchanged. The
+  dependency now builds with `default-features = false, features =
+  ["sync", "mimalloc"]`: turso 0.8's default `fts` feature does not compile
+  on current nightly rustc and agentfs does not use FTS; `mimalloc` is kept
+  explicitly so the global allocator stays what 0.7 default builds used.
+  The SDK crate root raises `recursion_limit` to 512: turso 0.8 types push
+  the nested OverlayFS async chains past the default trait-solver depth
+  when proving `Send` for async-trait boxed futures (rust#159228 class).
+
 ## [0.6.5] - 2026-09-26
 
 ### Changed

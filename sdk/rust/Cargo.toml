@@ -6,7 +6,13 @@ description = "AgentFS SDK for Rust"
 license = "MIT"
 
 [dependencies]
-turso = { version = "0.7.2", features = ["sync"] }
+# turso 0.8.0 (resolves turso_core/turso_sdk_kit 0.8.x). `default-features`
+# is OFF on purpose: 0.8's default `fts` feature fails to compile on current
+# nightly rustc (allocator type mismatch in turso_sdk_kit's fts/directory.rs)
+# and agentfs uses none of it. `mimalloc` (a 0.8 default) is kept explicitly
+# so the allocator stays what 0.7 default builds used; `sync` is the Turso
+# Cloud HTTP sync surface AgentFS::pull/push are built on.
+turso = { version = "0.8.0", default-features = false, features = ["sync", "mimalloc"] }
 tokio = { version = "1", features = ["full"] }
 async-trait = "0.1"
 serde = { version = "1.0", features = ["derive"] }
