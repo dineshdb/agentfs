@@ -6,13 +6,20 @@ description = "AgentFS SDK for Rust"
 license = "MIT"
 
 [dependencies]
-# turso 0.8.0 (resolves turso_core/turso_sdk_kit 0.8.x). `default-features`
+# turso 0.8.3 (resolves turso_core/turso_sdk_kit 0.8.x). `default-features`
 # is OFF on purpose: 0.8's default `fts` feature fails to compile on current
 # nightly rustc (allocator type mismatch in turso_sdk_kit's fts/directory.rs)
 # and agentfs uses none of it. `mimalloc` (a 0.8 default) is kept explicitly
 # so the allocator stays what 0.7 default builds used; `sync` is the Turso
 # Cloud HTTP sync surface AgentFS::pull/push are built on.
-turso = { version = "0.8.0", default-features = false, features = ["sync", "mimalloc"] }
+turso = { version = "0.8.3", default-features = false, features = ["sync", "mimalloc"] }
+# turso_core builds `branches` with default-features OFF, and that code path
+# calls `core::intrinsics::abort()`, which the 2026-10-18 nightly removed —
+# every nightly build in the graph died compiling it. Declaring it here with
+# `std` unifies the feature on for the whole graph, routing abort() through
+# `std::process::abort()` instead. Remove when turso moves to branches 0.5+
+# or enables std itself.
+branches = { version = "0.4.3", features = ["std"] }
 tokio = { version = "1", features = ["full"] }
 async-trait = "0.1"
 serde = { version = "1.0", features = ["derive"] }
